@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Http;
 class EWallet extends Controller
 {
     public function index(Request $request){
+
         $balance = $request->session()->get('balance',0); // Example Wallet Balance
         $transactions = [
             ['description' => 'Achat chez Amazon', 'amount' => -45.99],
@@ -23,15 +24,19 @@ class EWallet extends Controller
             'voucher' => 'required'
         ]);
 
-        $response = Http::withToken('3|Epff1WSZqXG4uB2PnXN1Q4vLBc6NZEZ1PcWXTMOTfaf6447a')
-        ->acceptJson()
+        
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer 3|Epff1WSZqXG4uB2PnXN1Q4vLBc6NZEZ1PcWXTMOTfaf6447a',
+            'Origin' => "https://xpay.mohackz.tech"
+        ])
         ->post('http://fleex.mohackz.tech/api/vouchers/redeem', [
             "code" => $request->voucher
         ]);
 
         if($response->failed()){
             $request->session()->flash('message','Voucher invalid ou inactif');
-            dd($response->json());
+            dd($response);
             return redirect()->route('dashboard');
         }
         
