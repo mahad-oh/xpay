@@ -23,14 +23,15 @@ class EWallet extends Controller
             'voucher' => 'required'
         ]);
 
-        $response = Http::withToken('2|RNr41WBO0Wz1iRyC2ooWPyN7nq9v7kUW3U5ZK17W63a9a6a4')
+        $response = Http::withToken('3|Epff1WSZqXG4uB2PnXN1Q4vLBc6NZEZ1PcWXTMOTfaf6447a')
         ->acceptJson()
-        ->post('http://localhost:8080/api/vouchers/redeem', [
+        ->post('http://fleex.mohackz.tech/api/vouchers/redeem', [
             "code" => $request->voucher
         ]);
 
         if($response->failed()){
             $request->session()->flash('message','Voucher invalid ou inactif');
+            dd($response->json());
             return redirect()->route('dashboard');
         }
         
