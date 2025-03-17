@@ -9,14 +9,16 @@ class EWallet extends Controller
 {
     public function index(Request $request){
 
-        $balance = $request->session()->get('balance',0); // Example Wallet Balance
-        $transactions = [
-            ['description' => 'Achat chez Amazon', 'amount' => -45.99],
-            ['description' => 'Transfert vers Banque', 'amount' => -500.00],
-            ['description' => 'Remboursement', 'amount' => 120.00],
-        ];
+        $balance = $request->session()->get('balance',0); 
 
-        return view('welcome', compact('balance', 'transactions'));
+        return view('tfpay.home', compact('balance'));
+    } 
+
+    public function topup(Request $request){
+
+        $balance = $request->session()->get('balance',0); 
+
+        return view('tfpay.topup', compact('balance'));
     }
 
     public function recharge(Request $request){
@@ -24,20 +26,21 @@ class EWallet extends Controller
             'voucher' => 'required'
         ]);
 
-        
         $response = Http::withHeaders([
             'Accept' => 'application/json',
+            "Content-Type" => "application/json",
             'Authorization' => 'Bearer 3|Epff1WSZqXG4uB2PnXN1Q4vLBc6NZEZ1PcWXTMOTfaf6447a',
-            'Origin' => "https://xpay.mohackz.tech"
         ])
-        ->post('http://fleex.mohackz.tech/api/vouchers/redeem', [
+        ->post('https://fleex.mohackz.tech/api/vouchers/redeem', [
             "code" => $request->voucher
         ]);
 
         if($response->failed()){
-            $request->session()->flash('message','Voucher invalid ou inactif');
+            if($response->status() == 404){
+                $request->session()->flash('message',"Your voucher code is invalid or already been used.");
+                return view('tfpay.unsuccessful_topup');
+            }
             dd($response);
-            return redirect()->route('dashboard');
         }
         
         $voucher_info = $response->json()['voucher_info'][0];
@@ -45,10 +48,13 @@ class EWallet extends Controller
         $amount = $voucher_info['amount'];
 
         $request->session()->increment('balance',$amount);
-        $request->session()->flash('message','Wallet réchargé avec succès !');
+        $request->session()->flash('message',"Your wallet has been recharged successfully !");
 
 
-        return redirect()->route('dashboard');
+        return view('tfpay.successful_topup',[
+            'balance' => $request->session()->get('balance'),
+            'amount' => $amount
+        ]);
 
 
     }
@@ -56,6 +62,6 @@ class EWallet extends Controller
     public function reset(Request $request){
         $request->session()->flush();
 
-        return redirect()->route('dashboard');
+        return redirect()->route('home');
     }
 }
