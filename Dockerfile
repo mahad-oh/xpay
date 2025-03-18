@@ -15,8 +15,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Installation dans votre image de NodeJS
 RUN apk update
-RUN apk upgrade
-RUN apk add nodejs npm
+RUN apk -UvX http://dl-4.alpinelinux.org/alpine/edge/main add -u nodejs npm
 
 ENV WEB_DOCUMENT_ROOT /app/public
 ENV APP_ENV local
