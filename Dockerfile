@@ -1,6 +1,8 @@
 FROM webdevops/php-nginx:8.3-alpine
 
 # Installation dans votre Image du minimum pour que Docker fonctionne
+RUN apk update
+RUN apk -UvX http://dl-4.alpinelinux.org/alpine/edge/main add -u nodejs npm
 RUN apk add oniguruma-dev libxml2-dev
 RUN docker-php-ext-install \
         bcmath \
@@ -12,10 +14,6 @@ RUN docker-php-ext-install \
 
 # Installation dans votre image de Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Installation dans votre image de NodeJS
-RUN apk update
-RUN apk -UvX http://dl-4.alpinelinux.org/alpine/edge/main add -u nodejs npm
 
 ENV WEB_DOCUMENT_ROOT /app/public
 ENV APP_ENV local
