@@ -23,16 +23,16 @@ class EWallet extends Controller
 
     public function recharge(Request $request){
         $request->validate([
-            'voucher' => 'required'
+            'voucher' => 'required|integer|min:12'
         ]);
-
+        
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             "Content-Type" => "application/json",
             'Authorization' => 'Bearer 3|Epff1WSZqXG4uB2PnXN1Q4vLBc6NZEZ1PcWXTMOTfaf6447a',
         ])
         ->post('https://fleex.mohackz.tech/api/vouchers/redeem', [
-            "code" => $request->voucher
+            "code" => (int)$request->voucher
         ]);
 
         if($response->failed()){
@@ -40,7 +40,7 @@ class EWallet extends Controller
                 $request->session()->flash('message',"Your voucher code is invalid or already been used.");
                 return view('tfpay.unsuccessful_topup');
             }
-            dd($response);
+            dd($response->json());
         }
         
         $voucher_info = $response->json()['voucher_info'][0];

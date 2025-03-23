@@ -52,7 +52,7 @@
                             {{-- <input type="text" value="200" required class="search-field value_input st1" type="text"> --}}
                             <input 
                                 class="search-field value_input st1"
-                                type="text" 
+                                type="number" 
                                 name="voucher" 
                                 id="voucher-code" 
                                 placeholder="Ex: 123456789012" 
