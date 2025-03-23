@@ -23,7 +23,7 @@ class EWallet extends Controller
 
     public function recharge(Request $request){
         $request->validate([
-            'voucher' => 'required|integer|min:12'
+            'voucher' => 'required|number'
         ]);
         
         $response = Http::withHeaders([
@@ -36,11 +36,8 @@ class EWallet extends Controller
         ]);
 
         if($response->failed()){
-            if($response->status() == 404){
-                $request->session()->flash('message',"Your voucher code is invalid or already been used.");
-                return view('tfpay.unsuccessful_topup');
-            }
-            dd($response->json());
+            $request->session()->flash('message',"Your voucher code is invalid or already been used.");
+            return view('tfpay.unsuccessful_topup');
         }
         
         $voucher_info = $response->json()['voucher_info'][0];
