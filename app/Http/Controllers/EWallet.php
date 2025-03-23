@@ -23,7 +23,7 @@ class EWallet extends Controller
 
     public function recharge(Request $request){
         $request->validate([
-            'voucher' => 'required|number'
+            'voucher' => 'required|min:12'
         ]);
         
         $response = Http::withHeaders([
@@ -32,7 +32,7 @@ class EWallet extends Controller
             'Authorization' => 'Bearer 3|Epff1WSZqXG4uB2PnXN1Q4vLBc6NZEZ1PcWXTMOTfaf6447a',
         ])
         ->post('https://fleex.mohackz.tech/api/vouchers/redeem', [
-            "code" => (int)$request->voucher
+            "code" => $request->voucher
         ]);
 
         if($response->failed()){
