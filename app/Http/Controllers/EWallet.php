@@ -31,7 +31,7 @@ class EWallet extends Controller
             "Content-Type" => "application/json",
             'Authorization' => 'Bearer 3|Epff1WSZqXG4uB2PnXN1Q4vLBc6NZEZ1PcWXTMOTfaf6447a',
         ])
-        ->post('https://fleex.mohackz.tech/api/vouchers/redeem', [
+        ->post('https://fleex-sandbox.laravel.cloud/api/vouchers/redeem', [
             "code" => $request->voucher
         ]);
 
