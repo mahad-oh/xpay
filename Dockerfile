@@ -1,7 +1,7 @@
 # Use PHP with Apache as the base image
 FROM php:8.2-apache as web
 
-RUN sudo add-apt-repository ppa:ondrej/php
+RUN add-apt-repository ppa:ondrej/php
 # Install Additional System Dependencies
 RUN apt-get update && apt-get install -y \
     libzip-dev \
