@@ -3,7 +3,6 @@ FROM webdevops/php-nginx:8.3
 # Installation dans votre Image du minimum pour que Docker fonctionne
 RUN apt update
 RUN apt install -y nodejs npm
-RUN apt install -y oniguruma-dev libxml2-dev
 RUN docker-php-ext-install \
         bcmath \
         ctype \
