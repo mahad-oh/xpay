@@ -5,7 +5,7 @@ FROM php:8.2-apache as web
 RUN apt-get update && apt-get install -y \
     libzip-dev \
     zip \
-    php8.2-pgsql
+    php-pgsql
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
