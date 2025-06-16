@@ -29,9 +29,9 @@ class EWallet extends Controller
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             "Content-Type" => "application/json",
-            'Authorization' => 'Bearer 3|Epff1WSZqXG4uB2PnXN1Q4vLBc6NZEZ1PcWXTMOTfaf6447a',
+            'Authorization' => 'Bearer '.env('FLEEX_API_TOKEN',''),
         ])
-        ->post('https://fleex-sandbox.laravel.cloud/api/vouchers/redeem', [
+        ->post(env("FLEEX_API_URL","https://sandbox.fleex.tech/api/").'vouchers/redeem', [
             "code" => $request->voucher
         ]);
 
