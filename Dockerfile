@@ -1,8 +1,7 @@
 # Use PHP with Apache as the base image
 FROM php:8.2-apache as web
 
-RUN apt-get update --fix-missing \
-    && apt-get install -y software-properties-common \
+RUN apt-get install -y software-properties-common \
     && rm -rf /var/lib/apt/lists/* \
     && add-apt-repository ppa:ondrej/php 
 
