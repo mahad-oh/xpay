@@ -1,10 +1,9 @@
-FROM webdevops/php-nginx:8.3-alpine
+FROM webdevops/php-nginx:8.3
 
 # Installation dans votre Image du minimum pour que Docker fonctionne
-RUN apk upgrade
-RUN apk update
-RUN apk -UvX http://dl-4.alpinelinux.org/alpine/edge/main add -u nodejs npm
-RUN apk add oniguruma-dev libxml2-dev
+RUN apt update
+RUN apt install -y nodejs npm
+RUN apt isntall -y oniguruma-dev libxml2-dev
 RUN docker-php-ext-install \
         bcmath \
         ctype \
