@@ -4,7 +4,8 @@ FROM php:8.2-apache as web
 # Install Additional System Dependencies
 RUN apt-get update && apt-get install -y \
     libzip-dev \
-    zip 
+    zip \
+    libpq-dev
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -16,8 +17,7 @@ RUN a2enmod rewrite
 RUN docker-php-ext-install pdo pdo_mysql zip
 
 # Install Postgre PDO
-RUN apt-get install -y libpq-dev \
-    && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
+RUN docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql pgsql
 
 # Configure Apache DocumentRoot to point to Laravel's public directory
