@@ -1,16 +1,10 @@
 # Use PHP with Apache as the base image
 FROM php:8.2-apache as web
 
-RUN apt-get update && \
-    apt-get install -y software-properties-common && \
-    add-apt-repository ppa:ondrej/php 
-
 # Install Additional System Dependencies
 RUN apt-get update && apt-get install -y \
     libzip-dev \
-    zip \
-    libghc-postgresql-libpq-dev \
-    php8.2-pgsql
+    zip 
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -19,7 +13,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 RUN a2enmod rewrite
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql zip
+RUN docker-php-ext-install pdo_mysql zip pgsql pdo_pgsql
 
 # Configure Apache DocumentRoot to point to Laravel's public directory
 # and update Apache configuration files
