@@ -1,6 +1,7 @@
 FROM webdevops/php-nginx:8.3-alpine
 
 # Installation dans votre Image du minimum pour que Docker fonctionne
+RUN apk upgrade
 RUN apk update
 RUN apk -UvX http://dl-4.alpinelinux.org/alpine/edge/main add -u nodejs npm
 RUN apk add oniguruma-dev libxml2-dev
