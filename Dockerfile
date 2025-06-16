@@ -18,8 +18,7 @@ RUN docker-php-ext-install \
         ctype \
         fileinfo \
         mbstring \
-        pdo_mysql \
-        xml
+        pdo_mysql 
 
 
 # Configure Apache DocumentRoot to point to Laravel's public directory
